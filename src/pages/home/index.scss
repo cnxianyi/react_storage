@@ -1,0 +1,57 @@
+.layout {
+  display: grid;
+  place-items: center; /* 居中对齐 */
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+.content {
+  text-align: center;
+  line-height: 120px;
+  background-color: #f0f0f0;
+  margin: 20px auto; /* 自动左右边距，实现水平居中 */
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.5s; /* 添加 transform 和阴影过渡 */
+  width: 60%;
+  height: 60%;
+  animation: breath-animation 4s infinite; /* 应用阴影呼吸动画 */
+  position: relative; /* 设置相对定位 */
+  top: -10%; 
+  @media (min-width: 769px) {
+    top: -10%;/* 宽屏时距离顶部 30% */
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+
+/* 添加阴影呼吸动画 */
+@keyframes breath-animation {
+  0% {
+    box-shadow: rgba(27, 100, 137, 0.25) 0px 8px 24px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; /* 较亮的阴影 */
+  }
+  25% {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 8px 24px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; /* 正常阴影 */
+  }
+  50% {
+    box-shadow: rgba(79, 17, 184, 0.25) 0px 8px 24px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; /* 较亮的阴影 */
+  }
+  75% {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 8px 24px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; /* 正常阴影 */
+  }
+  100% {
+    box-shadow: rgba(27, 100, 137, 0.25) 0px 8px 24px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; /* 较亮的阴影 */
+  }
+}
+
+
+.ant-upload-list-item-container {
+  margin: 10px;
+  color: #141414;
+}
+

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import {
 	AutoComplete,
 	Button,
@@ -16,9 +16,10 @@ import {
 import "./index.scss";
 import classNames from "classnames";
 import { useImmer } from "use-immer";
-import { fetchRegister } from "@/store/user";
+import { fetchLogin, fetchRegister } from "@/store/user";
 import { useDispatch } from "react-redux";
 import {_notice} from "@/utils";
+import { useNavigate } from "react-router-dom";
 
 const formItemLayout = {
 	labelCol: {
@@ -50,24 +51,32 @@ const tailFormItemLayout = {
 		},
 	},
 };
+
 const Login = () => {
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
 	const [form] = Form.useForm();
 	const onFinish = () => {
     if(isLogin){
       if(loginInfo.email && loginInfo.password){
-        _notice("登录成功!" , 'success')
-        
-        console.log(loginInfo);
+        dispatch(fetchLogin(loginInfo))
+        navigate('/')
       }else{
         _notice("邮箱或密码错误!" , 'error')
       }
     }else{
-      console.log(registerInfo);
       if(registerInfo.email && registerInfo.password && registerInfo.confirmPassword){
         dispatch(fetchRegister(registerInfo))
+        setRegisterInfo({
+          email: "",
+          password: "",
+          confirmPassword: "",
+          nickname: "",
+          code: "",
+        })
+        setIsLogin(true)
       }else{
         _notice("邮箱或密码错误!" , 'error')
       }
@@ -110,7 +119,8 @@ const Login = () => {
 						marginBottom: 20,
 					}}
 					size="large"
-					onChange={(key) => {setIsLogin(!isLogin); console.log(key);}}
+					onChange={(key) => {setIsLogin(!isLogin);}}
+          value={isLogin ? "登录" : "注册"}
 					options={["登录", "注册"]}
 				/>
 				<div className={classNames("form-content", { hidden: !isLogin })}>
