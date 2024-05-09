@@ -4,7 +4,7 @@ import { setClearUser } from "@/store/user/index";
 import { router } from "@/router";
 // axios 的封装
 const request = axios.create({
-  baseURL: "http://localhost:3098",
+  baseURL: "http://localhost:3098/api",
   timeout: 5000
 })
 

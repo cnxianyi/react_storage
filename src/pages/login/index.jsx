@@ -12,11 +12,13 @@ import {
 	Select,
 	Segmented,
 	Tabs,
-  notification,
 } from "antd";
 import "./index.scss";
 import classNames from "classnames";
 import { useImmer } from "use-immer";
+import { fetchRegister } from "@/store/user";
+import { useDispatch } from "react-redux";
+import {_notice} from "@/utils";
 
 const formItemLayout = {
 	labelCol: {
@@ -49,39 +51,29 @@ const tailFormItemLayout = {
 	},
 };
 const Login = () => {
+
+  const dispatch = useDispatch()
+
 	const [form] = Form.useForm();
 	const onFinish = () => {
     if(isLogin){
       if(loginInfo.email && loginInfo.password){
-        openNotification("登录成功!" , 'success')
+        _notice("登录成功!" , 'success')
+        
         console.log(loginInfo);
       }else{
-        openNotification("邮箱或密码错误!" , 'error')
+        _notice("邮箱或密码错误!" , 'error')
       }
     }else{
       console.log(registerInfo);
       if(registerInfo.email && registerInfo.password && registerInfo.confirmPassword){
-        openNotification("注册成功!" , 'success')
+        dispatch(fetchRegister(registerInfo))
       }else{
-        openNotification("邮箱或密码错误!" , 'error')
+        _notice("邮箱或密码错误!" , 'error')
       }
     }
 	};
 
-  function openNotification(msg , type){
-    if(type == 'success'){
-      notification.success({
-        message: msg,
-        duration: 1,
-      });
-    }else if(type == 'error'){
-      notification.error({
-        message: msg,
-        duration: 1,
-      });
-    }
-    
-  };
 
 	const [isLogin, setIsLogin] = useState(true);
 

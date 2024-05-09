@@ -8,9 +8,10 @@ import store from './store'
 import "@/index.scss"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  //   </React.StrictMode>,
     <Provider store={store}>
       <RouterProvider router={router}></RouterProvider>
     </Provider>
-  </React.StrictMode>,
+  
 )
