@@ -1,4 +1,6 @@
 .layout {
+  position: fixed;
+  left: 0;
   display: grid;
   place-items: center; /* 居中对齐 */
   border-radius: 10px;
@@ -7,27 +9,51 @@
   height: 100vh;
 }
 
+.new {
+  grid-template-columns: 100% 0%;
+}
+
+.task {
+  grid-template-columns: 40% 60%;
+}
+
+.none {
+  visibility: hidden;
+}
+
+.fixed-button-container {
+  position: fixed;
+  top: 30px; /* 调整按钮距离顶部的距离 */
+  right: 30px; /* 调整按钮距离右侧的距离 */
+  z-index: 999; /* 确保按钮位于其他内容之上 */
+  width: 48px;
+  height: 48px;
+}
+
+
+
 .content {
   text-align: center;
   line-height: 120px;
   background-color: #f0f0f0;
-  margin: 20px auto; /* 自动左右边距，实现水平居中 */
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.5s; /* 添加 transform 和阴影过渡 */
-  width: 60%;
-  height: 60%;
+  width: 80%; /* 占据左侧列的宽度 */
+  height: 80%;
   animation: breath-animation 4s infinite; /* 应用阴影呼吸动画 */
-  position: relative; /* 设置相对定位 */
-  top: -10%; 
-  @media (min-width: 769px) {
-    top: -10%;/* 宽屏时距离顶部 30% */
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 }
+
+.sider {
+  text-align: center;
+  line-height: 120px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  width: 95%; /* 占据左侧列的宽度 */
+  height: 95%;
+  transition: box-shadow 0.3s; /* 添加阴影过渡动画 */
+}
+
 
 
 /* 添加阴影呼吸动画 */
