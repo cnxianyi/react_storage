@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ant-design/colors':
+        specifier: ^7.0.2
+        version: 7.0.2
       '@ant-design/icons':
         specifier: ^5.3.7
         version: 5.3.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -20,6 +23,9 @@ importers:
       axios:
         specifier: ^1.6.8
         version: 1.6.8
+      classnames:
+        specifier: ^2.5.1
+        version: 2.5.1
       echarts:
         specifier: ^5.5.0
         version: 5.5.0
