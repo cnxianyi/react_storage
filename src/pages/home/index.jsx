@@ -1,94 +1,112 @@
 import React from "react";
-import { Flex, Layout , FloatButton } from "antd";
+import { Flex, Layout, FloatButton } from "antd";
 import "./index.scss";
 const { Sider, Content } = Layout;
-import { FontSizeOutlined, InboxOutlined , UserSwitchOutlined} from "@ant-design/icons";
+import {
+	FontSizeOutlined,
+	InboxOutlined,
+	UserSwitchOutlined,
+} from "@ant-design/icons";
 import { message, Upload } from "antd";
 import { useImmer } from "use-immer";
 import { useEffect } from "react";
-import { _notice } from "@/utils";
-
-import { getUserFilesAPI } from "@/apis/user";
+import { _notice, getToken } from "@/utils";
+import { getUserFilesAPI } from "@/apis/upload";
+import { fetchUserInfo } from "@/store/user";
 import axios from "axios";
 import TopBar from "./topBar";
 import ProgressNotice from "@/components/progressNotice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import dayjs from "dayjs";
+import { Outlet , useNavigate , useLocation } from 'react-router-dom'
+//import _Drawer from "@/components/drawer";
 
 const { Dragger } = Upload;
 
-export default function Home(){
+export default function Home() {
+	const [customItems, setCustomItems] = useImmer([]);
+  const dispatch = useDispatch()
+	const [files, setFiles] = useImmer([]);
 
-  const [customItems, setCustomItems] = useImmer([]);
+  const info = useSelector( state => state.user.userInfo)
+  //console.log(info); // {id:0}
+	const customItemRender = (originNode, file, customItems) => {
+		return;
+	};
 
-  const [files, setFiles] = useImmer([]);
+  // const [drawOpen, setDrawOpen] = useImmer(false);
+  // const [drawUrl , setDrawUrl] = useImmer('')
 
+	const props = {
+		name: "file",
+		multiple: true,
+		action: "http://localhost:3098/api/uploads/add",
+		onChange(info) {
+			//console.log(info.file); // name percent
+			info.fileList;
+			setFiles([...info.fileList]);
+			const { status } = info.file;
 
-  useEffect( ()=>{
-    getUserFilesAPI().then( (res)=>{
-      console.log(res);
-      setCustomItems([...res])
-    })
-  },[])
+			if (status == "uploading") {
 
-  const customItemRender = (originNode, file, customItems) => {
-    return
-  };
-  
-
-  const props = {
-    name: "file",
-    multiple: true,
-    action: "http://localhost:3098/api/uploads/add",
-    onChange(info) {
-
-      console.log(info.file); // name percent
-      info.fileList
-      setFiles([...info.fileList]);
-      const { status } = info.file;
+			}
+			if (status === "done") {
+        //console.log(info.file.response.file.destination+info.file.response.file.filename);
+        // setDrawOpen(true)
+			} else if (status === "error") {
+        _notice(<>{info.file.response.err}<br />游客上传大小限制5MB哦</> , "error")
+			}
+		},
+    headers: {
+      Authorization: `${getToken() ? "Bearer " +getToken() : ''}`, // 将 token 添加到请求头中
+    },
+		onDrop(e) {
+			console.log("Dropped files", e.dataTransfer.files);
+		},
+		progress: {
+			strokeColor: {
+				"0%": "#108ee9",
+				"100%": "#87d068",
+			},
+		},
+		// fileList: customItems,
+		itemRender: customItemRender,
+    beforeUpload(file){
+      if(info.id === 0 && files.length > 0){
+        console.log(file);
+        console.log(files);
+        _notice("游客仅能上传一个文件，登录的话能上传更多哦!(^ワ^＝)" , "error")
+        return false
+      }else{
+        return true
+      }
       
-      console.log(status);
-      if (status == "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (status === "done") {
-      } else if (status === "error") {
-      }
-    },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
-    progress: {
-      strokeColor: {
-        '0%': '#108ee9',
-        '100%': '#87d068',
-      },
-    },
-    // fileList: customItems,
-    itemRender: customItemRender,
-  };
+      
+    }
+	};
 
-  return (
-    <>
-      <Flex gap="middle" wrap>
-		<Layout className="layout new">
-      <div className="content">
-				<Dragger 
-        {...props}
-         className="ant-upload-dragger">
-					<p className="ant-upload-drag-icon">
-						<InboxOutlined />
-					</p>
-					<p className="ant-upload-text">
-          可直接拖拽文件到页面上以发送
-					</p>
-					<p className="ant-upload-hint">
-          可直接按 Ctrl+V 以发送剪贴板中的内容
-					</p>
-				</Dragger>
-			</div>
-		</Layout>
-	</Flex>
-  <TopBar></TopBar>
-  <ProgressNotice files={files}></ProgressNotice>
-    </>
-  )
-};
+	return (
+		<>
+			<Flex gap="middle" wrap>
+				<Layout className="layout new">
+        <Outlet></Outlet>
+					<div className="content">
+						<Dragger {...props} className="ant-upload-dragger">
+							<p className="ant-upload-drag-icon">
+								<InboxOutlined />
+							</p>
+							<p className="ant-upload-text">可直接拖拽文件到页面上以发送</p>
+							<p className="ant-upload-hint">
+								可直接按 Ctrl+V 以发送剪贴板中的内容
+							</p>
+						</Dragger>
+					</div>
+				</Layout>
+        <TopBar></TopBar>
+			</Flex>
+			<ProgressNotice files={files}></ProgressNotice>
+      {/* <_Drawer open={drawOpen} url={drawUrl}></_Drawer> */}
+		</>
+	);
+}

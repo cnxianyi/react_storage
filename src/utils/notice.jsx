@@ -11,7 +11,7 @@ export const notice = (msg , type='success')=>{
   }else if(type == 'error'){
     notification.error({
       message: msg,
-      duration: 3,
+      duration: 5,
     });
   }
 };

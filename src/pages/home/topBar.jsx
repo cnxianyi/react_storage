@@ -1,58 +1,167 @@
-import React, { useState } from 'react';
-import { Menu } from 'antd';
-import { AppstoreOutlined, CloudServerOutlined, UserOutlined, GithubOutlined } from '@ant-design/icons';
-
-const itemLeft = [
-  {
-    label: 'XIANYI_STORAGE',
-    key: 'Home',
-  },
-  {
-    label: 'Dashboard',
-    key: 'app2',
-    icon: <AppstoreOutlined />,
-  },
-  {
-    label: 'Monitor',
-    key: 'app',
-    icon: <CloudServerOutlined />,
-  }
-];
-
-const itemRight = [
-  {
-    label: 'User',
-    key: 'app1',
-    icon: <UserOutlined />,
-  }
-];
+import React, { useState, useEffect } from "react";
+import { Menu } from "antd";
+import {
+	AppstoreOutlined,
+	CloudServerOutlined,
+	UserOutlined,
+} from "@ant-design/icons";
+import "./topBar.scss";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useImmer } from "use-immer";
 
 const TopBar = () => {
-  const [current, setCurrent] = useState('Home');
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleClick = (e) => {
-    console.log('click ', e);
-    setCurrent(e.key);
-  };
+  const [itemLeft , setItemLeft] = useImmer([])
+  
+  const itemRight = [
+    {
+      label: "XIANYI_STORAGE",
+      key: "R1",
+    },
+  ]
 
-  return (
-    <div style={{zIndex: 9999}}>
-    <Menu onClick={handleClick} style={{float: "left"}} selectedKeys={[current]} mode="horizontal">
-      {itemLeft.map(item => (
-        <Menu.Item key={item.key} icon={item.icon}>
-          {item.label}
-        </Menu.Item>
-      ))}
-    </Menu>
-    <Menu onClick={handleClick} style={{float: "right"}} selectedKeys={[current]} mode="horizontal">
-      {itemRight.map(item => (
-        <Menu.Item key={item.key} icon={item.icon}>
-          {item.label}
-        </Menu.Item>
-      ))}
-    </Menu>
-    </div>
-  );
+  const userInfo = useSelector( state=>state.user.userInfo);
+
+  useEffect(() => {
+    if (userInfo.id === 0) {
+      setItemLeft([
+        {
+          label: "登录",
+          key: "L6",
+          icon: <UserOutlined />,
+        },
+        {
+          label: "Files",
+          key: "L4",
+          icon: <AppstoreOutlined />,
+        },
+        {
+          label: "Monitor",
+          key: "L5",
+          icon: <CloudServerOutlined />,
+        },
+      ]);
+    }else if (userInfo.nickname) {
+      setItemLeft([
+        {
+          label: userInfo.nickname,
+          key: "L0",
+          icon: <UserOutlined />,
+          children: [
+            {
+              label: "修改密码",
+              key: "L1",
+            },
+            {
+              label: "关于",
+              key: "L2",
+            },
+            {
+              label: "退出登录",
+              key: "L3",
+            },
+          ],
+        },
+        {
+          label: "Files",
+          key: "L4",
+          icon: <AppstoreOutlined />,
+        },
+        {
+          label: "Monitor",
+          key: "L5",
+          icon: <CloudServerOutlined />,
+        },
+      ]);
+    }
+  }, [userInfo, setItemLeft]);
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case '/':
+        setCurrentRight("R1");
+        setCurrentLeft("");
+        break;
+      case '/files':
+        setCurrentLeft("L4");
+        setCurrentRight("")
+        break;
+      case '/monitor':
+        setCurrentLeft("L5");
+        setCurrentRight("")
+        break;
+      default:
+        console.log(location.pathname);
+        break;
+    }
+  }, [location.pathname]);
+
+	const [currentLeft, setCurrentLeft] = useState("/");
+	const [currentRight, setCurrentRight] = useState("");
+
+	const handleClickLeft = (e) => {
+		setCurrentLeft(e.key);
+    
+    switch (e.key) {
+      case "L1":
+        console.log(1);
+        break;
+      case "L2":
+        console.log(2);
+        break;
+      case "L3":
+        console.log(3);
+        break;
+      case "L4":
+        navigate('/files')
+        break;
+      case "L5":
+        navigate('/monitor')
+        break;
+      case "L6":
+        navigate('/login')
+        break;
+      default:
+        break;
+    }
+	};
+
+	const handleClickRight = (e) => {
+		setCurrentRight(e.key);
+    switch (e.key) {
+      case "R1":
+        navigate('/')
+        break;
+      default:
+        break;
+    }
+	};
+
+	return (
+		<div className="bar">
+			<Menu
+				onClick={handleClickLeft}
+				selectedKeys={[currentLeft]}
+				mode="horizontal"
+				items={itemLeft.map((item) => ({
+					key: item.key,
+					icon: item.icon,
+					label: item.label,
+          children: item.children
+				}))}
+			/>
+			<Menu
+				onClick={handleClickRight}
+				className="right"
+				selectedKeys={[currentRight]}
+				mode="horizontal"
+				items={itemRight}
+			/>
+		</div>
+	);
 };
 
-export default TopBar;
+export default React.memo(TopBar);

@@ -6,12 +6,16 @@ import { Provider } from 'react-redux'
 import {router} from "@/router/index"
 import store from './store'
 import "@/index.scss"
+import Init from './init'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   // <React.StrictMode>
   //   </React.StrictMode>,
     <Provider store={store}>
-      <RouterProvider router={router}></RouterProvider>
+      <RouterProvider router={router}>
+      
+      </RouterProvider>
+      <Init></Init>
     </Provider>
-  
+
 )

@@ -1,4 +1,4 @@
-const KEY = 'token_key'
+const KEY = 'token'
 
 function setToken (token){
   localStorage.setItem(KEY , token)

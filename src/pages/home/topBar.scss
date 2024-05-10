@@ -1,0 +1,9 @@
+.bar {
+  display: grid;
+  grid-template-columns: 1fr auto; /* 1fr 表示自适应宽度的列，auto 表示根据内容宽度自动调整的列 */
+  width: 100%;
+}
+
+.right {
+  width: 140px;
+}
