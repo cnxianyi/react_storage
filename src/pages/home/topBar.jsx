@@ -9,6 +9,9 @@ import "./topBar.scss";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useImmer } from "use-immer";
+import { _notice, removeToken } from "@/utils";
+import { router } from "@/router";
+import { message } from "antd";
 
 const TopBar = () => {
   const navigate = useNavigate();
@@ -113,7 +116,16 @@ const TopBar = () => {
         console.log(2);
         break;
       case "L3":
-        console.log(3);
+        removeToken();
+        message.open({
+          type: 'success',
+          content: '退出成功，即将跳转登录...',
+        });
+        setTimeout(() => {
+          router.navigate('/login').then(() => {
+            window.location.reload();
+          });
+        }, 1000);
         break;
       case "L4":
         navigate('/files')

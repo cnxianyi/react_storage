@@ -11,7 +11,6 @@ const userStore = createSlice({
 	},
 	reducers: {
 		setUserInfo(state, action) {
-			console.log("action:", action);
 			if (action.payload.data.token) {
 				setToken(action.payload.token);
 			} else if (action.payload.token) {
@@ -21,7 +20,7 @@ const userStore = createSlice({
 		},
 		setClearUser(state) {
 			state.token = "";
-			state.userInfo = {};
+			state.userInfo = {id: 0};
 			removeToken();
 		},
 	},

@@ -4,9 +4,11 @@ import { CopyOutlined } from '@ant-design/icons';
 import { Progress, Spin } from "antd";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { message, Space } from 'antd';
 
 const ProgressNotice = ({ files = [] }) => {
   const [api, contextHolder] = notification.useNotification();
+  const [messageApi, messageContextHolder] = message.useMessage();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,7 +83,10 @@ const ProgressNotice = ({ files = [] }) => {
   const handleLinkClick = (link) => {
     navigator.clipboard.writeText(`http://localhost:3098/api/files/`+link)
       .then(() => {
-        console.log("复制成功");
+        messageApi.open({
+          type: 'success',
+          content: '复制成功',
+        });
       })
       .catch((error) => {
         console.error('Failed to copy link to clipboard:', error);
@@ -107,7 +112,7 @@ const ProgressNotice = ({ files = [] }) => {
     );
   };
 
-  return <>{contextHolder}</>;
+  return <>{contextHolder}{messageContextHolder}</>;
 };
 
 //handleLinkClick 待处理

@@ -29,7 +29,6 @@ export function registerAPI(data) {
 }
 
 export function getUserInfo() {
-  console.log('getInfo');
   return request({
     method: "POST",
     url: "users/info",
