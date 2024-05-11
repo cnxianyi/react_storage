@@ -1,6 +1,16 @@
+import React from 'react';
+import { Card } from 'antd';
+import './index.scss'
 
-export default function Monitor(){
+const Monitor = () => {
   return (
-    <>Monitor</>
-  )
-}
+    <div className='contentIframe'>
+        <iframe
+          src="http://localhost:19999"
+          className='card'
+        ></iframe>
+    </div>
+  );
+};
+
+export default Monitor;
