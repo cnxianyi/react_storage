@@ -14,5 +14,5 @@ export default function Init(){
         }
     })
 	}, []);
-  return
+  return <small style={{position: "fixed" , bottom: 2, left: 2,}}>XIANYI_STORAGE Version 1.0.1</small>
 }

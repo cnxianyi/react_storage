@@ -7,6 +7,8 @@ import Test from "@/pages/home/test";
 import Files from "@/pages/files";
 import Monitor from "@/pages/monitor";
 import Edit from "@/pages/edit";
+import AboutPage from "@/pages/about";
+
 
 
 const router = createBrowserRouter([
@@ -15,8 +17,8 @@ const router = createBrowserRouter([
     element: <Home></Home>,
     children: [
       {
-        path: "/test",
-        element: <Test></Test>,
+        path: "/about",
+        element: <AboutPage></AboutPage>,
       },
       {
         path: "/files",

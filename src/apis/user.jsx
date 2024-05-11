@@ -11,7 +11,7 @@ export function loginAPI(data) {
     return res; // 返回响应数据
   }).catch((error) => {
     //_notice(error.response.data.message, "error");
-    throw error; // 这里抛出错误
+    //throw error; // 这里抛出错误
   });
 }
 
@@ -24,8 +24,8 @@ export function registerAPI(data) {
     _notice(res.message);
     return res.data; // 返回响应数据
   }).catch((error) => {
-    _notice(error.response.data.message , "error");
-    return {}
+    //_notice(error.response.data.message, "error");
+    //throw error; // 这里抛出错误
   });
 }
 

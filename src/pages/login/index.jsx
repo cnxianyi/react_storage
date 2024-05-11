@@ -38,9 +38,11 @@ const Login = () => {
         _notice("密码不一致!", "error");
       } else {
         dispatch(fetchRegister(values))
-          .then(() => {
-            setIsLogin(true);
-            form.resetFields();
+          .then((res) => {
+            if(res){
+              setIsLogin(true);
+              form.resetFields();
+            }
           })
           .catch(error => _notice(error.message, 'error'));
       }

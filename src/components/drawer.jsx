@@ -10,7 +10,6 @@ const _Drawer = ({open , url}) => {
     if(open){
       setOpen(false); // true
     }
-    console.log(url);
   }, [open])
   const onClose = () => {
     setOpen(false);

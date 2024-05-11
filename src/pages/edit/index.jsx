@@ -69,7 +69,6 @@ const Edit = () => {
         oldPassword: editInfo.oldPassword,
         password: editInfo.password
       }).then( (res)=>{
-        console.log(res);
         if(res.message == 'success'){
           removeToken();
           message.open({

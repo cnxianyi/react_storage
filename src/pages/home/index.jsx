@@ -45,7 +45,7 @@ export default function Home() {
 		action: "http://localhost:3098/api/uploads/add",
 		onChange(info) {
 			const validFiles = info.fileList.filter(file => file.status);
-      console.log(validFiles); // 只显示有状态的文件列表
+      //console.log(validFiles); // 只显示有状态的文件列表
       setFiles(validFiles); // 更新状态，只包含有status属性的文件
       
 			const { status } = info.file;

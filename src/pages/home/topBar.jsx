@@ -51,7 +51,7 @@ const TopBar = () => {
       setItemLeft([
         {
           label: userInfo.nickname,
-          key: "L0",
+          key: "L7",
           icon: <UserOutlined />,
           children: [
             {
@@ -113,7 +113,7 @@ const TopBar = () => {
         navigate('/edit')
         break;
       case "L2":
-        console.log(2);
+        navigate('/about')
         break;
       case "L3":
         removeToken();
@@ -135,6 +135,9 @@ const TopBar = () => {
         break;
       case "L6":
         navigate('/login')
+        break;
+      case "L7":
+        navigate('/')
         break;
       default:
         break;
