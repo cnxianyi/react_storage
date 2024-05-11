@@ -60,7 +60,7 @@ const App = () => {
 
 	const [searchText, setSearchText] = useState("");
 	const [searchedColumn, setSearchedColumn] = useState("");
-  const inputRef = React.useRef(null);
+	const inputRef = React.useRef(null);
 
 	const handleSearch = (selectedKeys, confirm, dataIndex) => {
 		confirm();
@@ -73,54 +73,54 @@ const App = () => {
 		setSearchText("");
 	};
 
-	const getColumnSearchProps = (dataIndex, placeholder , inputRef) => ({
+	const getColumnSearchProps = (dataIndex, placeholder, inputRef) => ({
 		filterDropdown: ({
 			setSelectedKeys,
 			selectedKeys,
 			confirm,
 			clearFilters,
 		}) => {
-
-
-      return (
-        <div style={{ padding: 8 }}>
-          <Input
-            placeholder={placeholder}
-            value={selectedKeys[0]}
-            ref={inputRef}
-            onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            style={{ width: 188, marginBottom: 8, display: 'block' }}
-          />
-          <Space>
-            <Button
-              type="primary"
-              onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-              size="small"
-              style={{ width: 90 }}
-            >
-              搜索
-            </Button>
-            <Button
-              onClick={() => handleReset(clearFilters)}
-              size="small"
-              style={{ width: 90 }}
-            >
-              重置
-            </Button>
-          </Space>
-        </div>
-      );
-    },
+			return (
+				<div style={{ padding: 8 }}>
+					<Input
+						placeholder={placeholder}
+						value={selectedKeys[0]}
+						ref={inputRef}
+						onChange={(e) =>
+							setSelectedKeys(e.target.value ? [e.target.value] : [])
+						}
+						onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+						style={{ width: 188, marginBottom: 8, display: "block" }}
+					/>
+					<Space>
+						<Button
+							type="primary"
+							onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+							size="small"
+							style={{ width: 90 }}
+						>
+							搜索
+						</Button>
+						<Button
+							onClick={() => handleReset(clearFilters)}
+							size="small"
+							style={{ width: 90 }}
+						>
+							重置
+						</Button>
+					</Space>
+				</div>
+			);
+		},
 		filterIcon: (filtered) => (
-			<SearchOutlined onClick={()=>{
-        setTimeout(() => {
-          if(inputRef.current){
-            inputRef.current.focus()
-          }
-      }, 200);}}
+			<SearchOutlined
+				onClick={() => {
+					setTimeout(() => {
+						if (inputRef.current) {
+							inputRef.current.focus();
+						}
+					}, 200);
+				}}
 				style={{ color: filtered ? "#1890ff" : undefined, padding: "0 10px" }}
 			/>
 		),
@@ -164,7 +164,7 @@ const App = () => {
 					dataIndex="file_name"
 					key="fileName"
 					fixed="left"
-					{...getColumnSearchProps("file_name", "搜索文件名" , inputRef)}
+					{...getColumnSearchProps("file_name", "搜索文件名", inputRef)}
 					render={(text) => (
 						<Tooltip title={decodeURIComponent(escape(text))}>
 							<span
@@ -187,15 +187,20 @@ const App = () => {
 					key="fileAddress"
 					render={(text, record) => (
 						<>
-							<div style={{ display: "flex", alignItems: "center" }}>
-								<a
-									style={{ flex: "1" }}
-								>{`http://localhost:3098/api/files/${text}`}</a>
-								<Button
-									icon={<CopyOutlined />}
-									onClick={() => handleLinkClick(text)}
-								/>
-							</div>
+							<Tooltip title={`http://localhost:3098/api/files/${text}`}>
+								<div style={{ display: "flex", alignItems: "center" }}>
+									<a
+										style={{ flex: "1", cursor: "pointer" }}
+										onClick={() => handleLinkClick(text)}
+									>
+										{text}
+									</a>
+									<Button
+										icon={<CopyOutlined />}
+										onClick={() => handleLinkClick(text)}
+									/>
+								</div>
+							</Tooltip>
 						</>
 					)}
 				/>
@@ -232,34 +237,38 @@ const App = () => {
 					sorter={(a, b) => a.download_count - b.download_count}
 				/>
 				<Column
-    title="状态"
-    dataIndex="is_banned"
-    key="status"
-    filters={[
-        { text: "ban", value: "ban" },
-        { text: "del", value: "del" },
-        { text: "active", value: "action" },
-    ]}
-    defaultFilteredValue={['action', 'ban']}
-    onFilter={(value, record) => {
-        if(value === 'ban' && record.is_banned === 1){
-            return record;
-        } else if(value === 'del' && record.is_deleted === 1){
-            return record;
-        } else if(value === 'action' && record.is_deleted === 0 && record.is_banned === 0){
-            return record;
-        }
-    }}
-    render={(text, record) => {
-        if (record.is_deleted === 0 && record.is_banned === 0) {
-            return <Tag color="success">active</Tag>;
-        } else if (record.is_banned === 1) {
-            return <Tag color="warning">ban</Tag>
-        } else if (record.is_deleted === 1) {
-            return <Tag color="error">del</Tag>
-        }
-    }}
-/>
+					title="状态"
+					dataIndex="is_banned"
+					key="status"
+					filters={[
+						{ text: "ban", value: "ban" },
+						{ text: "del", value: "del" },
+						{ text: "active", value: "action" },
+					]}
+					defaultFilteredValue={["action", "ban"]}
+					onFilter={(value, record) => {
+						if (value === "ban" && record.is_banned === 1) {
+							return record;
+						} else if (value === "del" && record.is_deleted === 1) {
+							return record;
+						} else if (
+							value === "action" &&
+							record.is_deleted === 0 &&
+							record.is_banned === 0
+						) {
+							return record;
+						}
+					}}
+					render={(text, record) => {
+						if (record.is_deleted === 0 && record.is_banned === 0) {
+							return <Tag color="success">active</Tag>;
+						} else if (record.is_banned === 1) {
+							return <Tag color="warning">ban</Tag>;
+						} else if (record.is_deleted === 1) {
+							return <Tag color="error">del</Tag>;
+						}
+					}}
+				/>
 
 				<Column
 					title="文件版本"

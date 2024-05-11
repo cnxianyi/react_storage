@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { editPassword } from "@/apis/user";
 import { message } from "antd";
 import { router } from "@/router";
+import "./index.scss"
 
 const formItemLayout = {
 	labelCol: {
@@ -45,7 +46,7 @@ const tailFormItemLayout = {
 	},
 };
 
-const Login = () => {
+const Edit = () => {
 
 	const [form] = Form.useForm();
 	const onFinish = () => {
@@ -54,6 +55,13 @@ const Login = () => {
         message.open({
           type: 'error',
           content: '原密码与新密码不可一致',
+        });
+        return
+      }
+      if(editInfo.confirmPassword !== editInfo.password){
+        message.open({
+          type: 'error',
+          content: '密码不一致',
         });
         return
       }
@@ -213,4 +221,4 @@ const Login = () => {
 		</div>
 	);
 };
-export default Login;
+export default Edit;

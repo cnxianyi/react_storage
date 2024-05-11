@@ -34,6 +34,7 @@ export default function Home() {
 	const customItemRender = (originNode, file, customItems) => {
 		return;
 	};
+  
 
   // const [drawOpen, setDrawOpen] = useImmer(false);
   // const [drawUrl , setDrawUrl] = useImmer('')
@@ -43,9 +44,10 @@ export default function Home() {
 		multiple: true,
 		action: "http://localhost:3098/api/uploads/add",
 		onChange(info) {
-			//console.log(info.file); // name percent
-			info.fileList;
-			setFiles([...info.fileList]);
+			const validFiles = info.fileList.filter(file => file.status);
+      console.log(validFiles); // 只显示有状态的文件列表
+      setFiles(validFiles); // 更新状态，只包含有status属性的文件
+      
 			const { status } = info.file;
 
 			if (status == "uploading") {
@@ -55,7 +57,7 @@ export default function Home() {
         //console.log(info.file.response.file.destination+info.file.response.file.filename);
         // setDrawOpen(true)
 			} else if (status === "error") {
-        _notice(<>{info.file.response.err}<br />游客上传大小限制5MB哦</> , "error")
+        _notice(info.file.response.err , "error")
 			}
 		},
     headers: {
@@ -73,16 +75,16 @@ export default function Home() {
 		// fileList: customItems,
 		itemRender: customItemRender,
     beforeUpload(file){
-      if(info.id === 0 && files.length > 0){
-        console.log(file);
-        console.log(files);
-        _notice("游客仅能上传一个文件，登录的话能上传更多哦!(^ワ^＝)" , "error")
-        return false
-      }else{
-        return true
+      const maxSize = info.id === 0 ? 5 * 1024 * 1024 : 500 * 1024 * 1024; // 5MB 或 500MB
+
+      if (file.size > maxSize) {
+        const errorMessage = info.id === 0
+          ? "游客仅能上传一个文件，登录的话能上传更多哦!(^ワ^＝)"
+          : "文件大小不能超过500MB哦";
+        _notice(errorMessage, "error");
+        return false; // 取消上传
       }
-      
-      
+      return true;
     }
 	};
 
@@ -99,6 +101,15 @@ export default function Home() {
 							<p className="ant-upload-text">可直接拖拽文件到页面上以发送</p>
 							<p className="ant-upload-hint">
 								可直接按 Ctrl+V 以发送剪贴板中的内容
+							</p>
+              <p className="ant-upload-hint" hidden={info.id != 0}>
+								欢迎您: 游客<br />您仅能在本站上传一个不超过5MB的文件，想要上传更多或更大的文件还请登录哦
+							</p>
+              <p className="ant-upload-hint" hidden={info.id == 0}>
+								欢迎您: {info.nickname}<br />您能在本站上传不限数量且文件大小小于500MB的文件
+							</p>
+              <p className="ant-upload-hint" hidden={info.id == 0}>
+							您已经在 XIANYI_STORAGE 上传了: <strong>{(info.uploaded_file_size/1048576).toFixed(2)}</strong> MB
 							</p>
 						</Dragger>
 					</div>

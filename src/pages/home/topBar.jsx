@@ -110,7 +110,7 @@ const TopBar = () => {
     
     switch (e.key) {
       case "L1":
-        console.log(1);
+        navigate('/edit')
         break;
       case "L2":
         console.log(2);

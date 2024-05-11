@@ -1,6 +1,7 @@
 import { request , _notice, getToken } from "@/utils";
+import { message } from "antd";
 
-export function loginAPI(data){
+export function loginAPI(data) {
   return request({
     method: "POST",
     data: data,
@@ -9,8 +10,8 @@ export function loginAPI(data){
     _notice(res.message);
     return res; // 返回响应数据
   }).catch((error) => {
-    _notice(error.response.data.message , "error");
-    return {}
+    //_notice(error.response.data.message, "error");
+    throw error; // 这里抛出错误
   });
 }
 
@@ -32,6 +33,16 @@ export function getUserInfo() {
   return request({
     method: "POST",
     url: "users/info",
+  }).then((res) => {
+    return res; // 返回响应数据
+  })
+}
+
+export function editPassword(data) {
+  return request({
+    method: "POST",
+    url: "users/edit/password",
+    data: data
   }).then((res) => {
     return res; // 返回响应数据
   })

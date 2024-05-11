@@ -1,0 +1,26 @@
+/* App.scss */
+.menu-right {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+/* 以下是为了确保子菜单项不会被错误地渲染成垂直布局 */
+.ant-menu-horizontal > .ant-menu-item-group {
+  display: inline-block;
+  border: none !important; /* 移除边框 */
+}
+
+.ant-menu-horizontal > .ant-menu-item-group .ant-menu-item-group-list {
+  display: flex;
+}
+
+/* 移除标题 */
+.ant-menu-horizontal > .ant-menu-item-group .ant-menu-item-group-title {
+  display: none;
+}
+
+/* 修正子菜单项的样式 */
+.ant-menu-horizontal > .ant-menu-item-group .ant-menu-item-group-list .ant-menu-item {
+  top: 0;
+}

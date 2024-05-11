@@ -39,10 +39,18 @@ function fetchRegister(data) {
 }
 
 function fetchLogin(loginForm) {
-	return async (dispatch) => {
-		const res = await loginAPI(loginForm);
-		dispatch(dispatch(setUserInfo(res))); // 同步存入token
-	};
+  return async (dispatch) => {
+    try {
+      const res = await loginAPI(loginForm);
+      if (res) {
+        dispatch(setUserInfo(res));
+        return res; // 这里确保返回的是Promise的resolve值
+      }
+    } catch (error) {
+      // 如果有错误，你可以在这里处理或者继续抛出
+      throw error;
+    }
+  };
 }
 
 function fetchUserInfo() {

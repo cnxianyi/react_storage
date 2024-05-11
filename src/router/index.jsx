@@ -6,6 +6,8 @@ import Home from "@/pages/home";
 import Test from "@/pages/home/test";
 import Files from "@/pages/files";
 import Monitor from "@/pages/monitor";
+import Edit from "@/pages/edit";
+
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/monitor",
         element: <Monitor></Monitor>,
+      },
+      {
+        path: "/edit",
+        element: <Edit></Edit>,
       },
     ]
   },

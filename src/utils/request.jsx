@@ -9,7 +9,7 @@ const request = axios.create({
   timeout: 5000
 })
 
-const interceptURLs = ['users/info' , 'files/list' , 'files/delete'];
+const interceptURLs = ['users/info' , 'files/list' , 'files/delete' , 'users/edit/password'];
 
 request.interceptors.request.use(
   (config) => {
